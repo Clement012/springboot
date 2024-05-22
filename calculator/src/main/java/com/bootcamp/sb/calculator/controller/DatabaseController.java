@@ -1,19 +1,16 @@
-package com.bootcamp.sb.demosbcalculator.controller;
+package com.bootcamp.sb.calculator.controller;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @ResponseBody
-
 public class DatabaseController {
-
-    // belong to Class
+  // belong to Class
     private static int[] arr = new int[] {10,-3,9};  
 
     // Design an Api, get the value from array by index.
@@ -53,6 +50,4 @@ public class DatabaseController {
 
       
     }
-  } 
-
-
+}

@@ -1,4 +1,4 @@
-package com.bootcamp.sb.demosbcalculator.controller;
+package com.bootcamp.sb.calculator.controller;
 
 import java.math.BigDecimal;
 import org.springframework.stereotype.Controller;
@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @ResponseBody
 public class CalculatorController {
-
-    // @PathVariable is a wat to map the variable in the URI to
+  // @PathVariable is a wat to map the variable in the URI to
     // java method input parameters
     // Approach 1  //localhost:8080/sum/10/11
     @GetMapping(value = "/sum/{a}/{b}")
@@ -59,8 +58,20 @@ public class CalculatorController {
         }
         return BigDecimal.valueOf(p2).add(BigDecimal.valueOf(q2)).toString();
       }
+
+//  private static int[] arr = new int[]{1,2,3,4,5};
+//  @GetMapping(value = "/database/value/{index}")
+//  public int get(@PathVariable int index){
+//    if (index >= 0 && index < arr.length){
+//      return index;
+//    }
+//    return -1;
+//  }
   public static void main(String[] args) {
-    CalculatorController cc = new CalculatorController();
-    cc.sum(10,11);
+    int[] array = new int[]{1,2,3,4,5};
+      for (int i = 0 ; i < array.length ; i++){
+        
+
+      }
   }
 }
