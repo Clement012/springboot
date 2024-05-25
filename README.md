@@ -26,3 +26,4 @@
 # throw exception
 
 # Static Difference?
+ - Controller -> static method

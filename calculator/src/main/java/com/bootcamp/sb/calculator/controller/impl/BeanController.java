@@ -1,15 +1,15 @@
-package com.bootcamp.sb.calculator.controller;
+package com.bootcamp.sb.calculator.controller.impl;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.bootcamp.sb.calculator.CalculatorApplication;
+import com.bootcamp.sb.calculator.controller.BeanOperation;
 
 @Controller
 @ResponseBody
-public class BeanController {
+public class BeanController implements BeanOperation {
   
-  @GetMapping(value = "/beans")
+  @Override
   public String[] getBeans(){
     return CalculatorApplication.getContext().getBeanDefinitionNames();
   }

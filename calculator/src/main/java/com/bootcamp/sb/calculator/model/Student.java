@@ -33,8 +33,4 @@ public class Student extends Person {
   public int hashCode(){
     return Objects.hash(this.getIdNumber());
   }
-  public static void main(String[] args) {
-    Student p = new Student(1,"Vincent");
-    
-  }
 }

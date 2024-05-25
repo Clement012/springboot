@@ -1,4 +1,4 @@
-package com.bootcamp.sb.calculator.controller;
+package com.bootcamp.sb.calculator.controller.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,33 +6,34 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import com.bootcamp.sb.calculator.controller.StudentOperation;
 import com.bootcamp.sb.calculator.model.Student;
 
 @Controller
 @ResponseBody
 
-public class StudentController {
+public class StudentController implements StudentOperation {
   
-  @GetMapping(value = "/students")
+  @Override
   public List<Student> getAll(){
     return Student.studentDB;
   }
 
-  @GetMapping(value = "/student/add")
+  @Override
   public List<Student> add(@RequestParam String name,
   @RequestParam(value = "id") int studentId){
     Student.studentDB.add(new Student(studentId, name));
     return Student.studentDB;
   }
 
-  @GetMapping(value = "/students/ids")
+  @Override
   public int[] getAllIds(){
     return Student.studentDB.stream()
     .mapToInt(e -> e.getIdNumber())
     .toArray();
   }
 
-  @GetMapping(value = "/student/remove")
+  @Override
   public List<Student> remove (@RequestParam String name){
     if (name == null)
      return null;

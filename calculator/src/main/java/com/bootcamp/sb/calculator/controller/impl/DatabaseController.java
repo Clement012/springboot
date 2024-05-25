@@ -1,4 +1,4 @@
-package com.bootcamp.sb.calculator.controller;
+package com.bootcamp.sb.calculator.controller.impl;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -6,17 +6,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
+import com.bootcamp.sb.calculator.controller.DatabaseOperation;
 
 @Controller
 @ResponseBody
-public class DatabaseController {
+public class DatabaseController implements DatabaseOperation {
   // belong to Class
     private static int[] arr = new int[] {10,-3,9};  
 
     // Design an Api, get the value from array by index.
     // index value checking
     // index range: if/ try&catch
-    @GetMapping(value ="/database/value/{index}")
+    @Override
     public String get(@PathVariable String index){
       try{
         int idx = Integer.parseInt(index);
@@ -30,7 +31,7 @@ public class DatabaseController {
 
     // API : sorting
     // stream
-    @GetMapping(value ="/database/sorting")
+    @Override
     public void sort(){
       Comparator<Integer> descending = (i1,i2) -> i1.compareTo(i2) > 0 ? -1 : 1;
       
