@@ -13,7 +13,7 @@ import com.example.sb.dto.controller.impl.StockController;
 // 2. 100% Simulating the actual @SpringBootApplication env.
 class DtoApplicationTests {
 
-/* 	@Autowired
+ 	@Autowired
 	private AppConfig appConfig;
 
    @Autowired
@@ -22,5 +22,5 @@ class DtoApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-*/
+
 }

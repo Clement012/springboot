@@ -28,8 +28,8 @@ import static org.hamcrest.Matchers.hasItem;
 @WebMvcTest(StockController.class)  
 // Create the spring context with web layer related beans ONLY
 class StockControllerTest {
- /*  @Autowired
-  private StockController stockController;
+ // @Autowired
+  //private StockController stockController;
 
   @MockBean
   private StockService stockService;
@@ -47,15 +47,15 @@ class StockControllerTest {
         .thenReturn(new ArrayList<>(List.of(s1, s2, s3)));
 
     // Simulate a client make the web request
-    mockMvc.perform(MockMvcRequestBuilders.get("/stocks")) //
-        .andExpect(MockMvcResultMatchers.jsonPath("$[0].stockNo", is(5)))
+    mockMvc.perform(MockMvcRequestBuilders.get("/stockTotal")) //
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].stockNo", is(5)))  //Error
         .andExpect(MockMvcResultMatchers.jsonPath("$[0].quantity", is(3000)))
         .andExpect(MockMvcResultMatchers.jsonPath("$[1].stockNo", is(10)))
         .andExpect(MockMvcResultMatchers.jsonPath("$[1].quantity", is(20000)));
 
     verify(stockService, times(1)).getAll();
 
-    mockMvc.perform(get("/stocks"))
+    mockMvc.perform(get("/stockTotal"))
         .andExpect(jsonPath("$[*].stockNo").value(hasItem(5)))
         .andExpect(jsonPath("$[*].stockNo").value(hasItem(10)))
         .andExpect(jsonPath("$[*].quantity").value(hasItem(3000)))
@@ -71,7 +71,7 @@ class StockControllerTest {
     Mockito.when(stockService.getAll())
         .thenReturn(new ArrayList<>(List.of(s1, s2, s3)));
 
-    String json = mockMvc.perform(get("/stocks")).andReturn().getResponse()
+    String json = mockMvc.perform(get("/stockTotal")).andReturn().getResponse()
         .getContentAsString();
 
     // Deserialize JSON (No Arg Constructor)
@@ -81,7 +81,7 @@ class StockControllerTest {
 
     assertThat(dtoList, hasItem(new StockDTO(5, 3000)));
     assertThat(dtoList, hasItem(new StockDTO(10, 20000)));
-  } */
+  } 
   //
 /*   @Autowired
   private StockController stockcontroller;

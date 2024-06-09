@@ -35,6 +35,6 @@ public class User {
     private String name;
     private String catchPharse;
     @JsonProperty(value = "bs")
-    private String buniness;
+    private String business;
    }
 }

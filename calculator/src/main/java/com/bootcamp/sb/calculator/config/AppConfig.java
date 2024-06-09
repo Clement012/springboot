@@ -18,7 +18,7 @@ public class AppConfig {
   // @Configuration ok / @Controller not ok
    Cat createWhiteCat(){
     return new Cat("Vincent", 4 , List.of(Color.WHITE) ); 
-  } //actually no new in this case
+  } //actunamae ally no new in this case
   // new actually is DB data
   
 
@@ -27,4 +27,6 @@ public class AppConfig {
   Cat createGrayCat(){  
     return new Cat("Vera", 10,List.of(Color.GREY));
   }
+
+
 }

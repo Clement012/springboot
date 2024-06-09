@@ -1,0 +1,27 @@
+server: 
+  port: 8085
+
+api:
+  json-place-holder:
+    domain: 'jsonplaceholder.typicode.com'
+    endpoints: 
+      users: '/users'
+      posts: '/posts'
+
+database: 
+  db-name: "database"
+
+spring:
+  datasource:
+    driverClassName: "org.postgresql.Driver"
+    url: "jdbc:postgresql://localhost:5432/${database.db-name}"
+    username: "postgres"
+    password: "admin1234"
+
+spring.jpa:
+  show-sql: true
+  hibernate.ddl-auto: create-drop # update
+  # Hibernate ddl auto (create, create-drop, validate, update)
+  # update: ingore change in column and update(add column okay.)
+  # create-drop: adjust and update 
+  # validate: can't change & will stopRUN

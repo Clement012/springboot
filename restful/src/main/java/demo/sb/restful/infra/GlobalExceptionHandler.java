@@ -1,25 +1,48 @@
 package demo.sb.restful.infra;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import lombok.Getter;
 
-// @RestControllerAdvice // @ContollerAdvice + @ResponseBody
+//RestControllerAdvice // @ContollerAdvice + @ResponseBody
 public class GlobalExceptionHandler {
 
   @ExceptionHandler(NumberFormatException.class) // catch
+  @ResponseStatus(value = HttpStatus.BAD_REQUEST)
   public ErrorResponse numberFormatExceptionHandler(NumberFormatException e) {
     return ErrorResponse.of(ErrorCode.NFE.getCode(), ErrorCode.NFE.getDesc());
   }
-
   @ExceptionHandler(NullPointerException.class) // catch
+  @ResponseStatus(value = HttpStatus.BAD_REQUEST)
   public ErrorResponse nullPointerExceptionHandler(NullPointerException e) {
     return ErrorResponse.of(ErrorCode.NPE.getCode(), ErrorCode.NPE.getDesc());
   }
-
   @ExceptionHandler(ArithmeticException.class) // catch
+  @ResponseStatus(value = HttpStatus.BAD_REQUEST)
   public ErrorResponse arithmeticExceptionHandler(ArithmeticException e) {
     return ErrorResponse.of(ErrorCode.AE.getCode(), ErrorCode.AE.getDesc());
   }
+  @ExceptionHandler(BusinessRuntimeException.class)
+  @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+  public ErrorResponse businessRuntimeExceptionHandler(
+      BusinessRuntimeException e) {
+    return new ErrorResponse(e.getCode(), e.getMessage());
+  }
+  @ExceptionHandler(NotFoundException.class)
+  @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+  public ErrorResponse notFoundExceptionHandler(
+    NotFoundException e) {
+    return new ErrorResponse(e.getCode(), e.getMessage());
+  }
+ /*  @ExceptionHandler(Exception.class)
+  @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+  public ErrorResponse exceptionHandler(
+    Exception e) {
+    return new ErrorResponse(99999, "Other invalid input Exception.");
+  } */
+
 
   // Alternative
   // @ExceptionHandler({NumberFormatException.class, NullPointerException.class,

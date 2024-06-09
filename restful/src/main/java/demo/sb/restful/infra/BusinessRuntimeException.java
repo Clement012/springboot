@@ -1,5 +1,6 @@
 package demo.sb.restful.infra;
 
+
 import lombok.Getter;
 
 @Getter

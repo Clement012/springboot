@@ -15,8 +15,8 @@ public class User {
     this.id++ ;
     stocks = new ArrayList<>();
    }
-   public void add(Stock stock){
-    this.stocks.add(stock);
+   public boolean add(Stock stock){
+    return this.stocks.add(stock);
    }
   }
   
