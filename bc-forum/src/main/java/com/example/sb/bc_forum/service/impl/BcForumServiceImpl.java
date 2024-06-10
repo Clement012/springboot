@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import com.example.sb.bc_forum.exceptions.RestTemplateException;
 import com.example.sb.bc_forum.infra.Scheme;
 import com.example.sb.bc_forum.model.Comment;
 import com.example.sb.bc_forum.model.Post;
@@ -34,7 +35,7 @@ public class BcForumServiceImpl implements BcForumService {
 
 
   @Override
-  public List<User> getUsers() {
+  public List<User> getUsers()  {
     // String url = "https://jsonplaceholder.typicode.com/users";
     String url = UriComponentsBuilder.newInstance() //
         .scheme(Scheme.HTTPS.lowerCase()) //
@@ -47,7 +48,7 @@ public class BcForumServiceImpl implements BcForumService {
   }
 
   @Override
-  public List<Post> getPosts(int userId) {
+  public List<Post> getPosts(int userId)  {
     // String url2 = "https://jsonplaceholder.typicode.com/posts";
     String url2 = UriComponentsBuilder.newInstance() //
         .scheme(Scheme.HTTPS.lowerCase()) //

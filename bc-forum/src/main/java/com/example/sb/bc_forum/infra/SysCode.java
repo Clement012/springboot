@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public enum SysCode {
   OK(0, "success."), //
-  NOT_FOUND(1, "not found."), //
-  USER_ID_NOT_FOUND(2, "User ID not found."), //
-  LIST_ADD_FAIL(3, "List Add Fail."), //
+  USER_NOT_FOUND(1, "User not found."), //
+  INVALID_INPUT(2, "Invalid Input."), //
+  RESTTEMPLATE_ERROR(3, "RestTemplate Error - JsonPlaceHolder."), //
   ;
 
   private int code;

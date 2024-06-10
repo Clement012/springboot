@@ -3,25 +3,34 @@ package com.example.sb.bc_forum.infra;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import lombok.Getter;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import com.example.sb.bc_forum.exceptions.InvalidInputException;
+import com.example.sb.bc_forum.exceptions.RestTemplateException;
+import com.example.sb.bc_forum.exceptions.UserNotFoundException;
 
-//RestControllerAdvice // @ContollerAdvice + @ResponseBody
+@RestControllerAdvice // @ContollerAdvice + @ResponseBody
 public class GlobalExceptionHandler {
 
   @ExceptionHandler(NumberFormatException.class) // catch
   @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-  public ErrorResponse numberFormatExceptionHandler(NumberFormatException e) {
-    return ErrorResponse.of(ErrorCode.NFE.getCode(), ErrorCode.NFE.getDesc());
+  public ApiResp<Void> numberFormatExceptionHandler(NumberFormatException e) {
+    return ApiResp.<Void>builder() //
+        .error(ErrorCode.NFE) //
+        .build();
   }
   @ExceptionHandler(NullPointerException.class) // catch
   @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-  public ErrorResponse nullPointerExceptionHandler(NullPointerException e) {
-    return ErrorResponse.of(ErrorCode.NPE.getCode(), ErrorCode.NPE.getDesc());
+  public ApiResp<Void> nullPointerExceptionHandler(NullPointerException e) {
+    return ApiResp.<Void>builder() //
+        .error(ErrorCode.NPE) //
+        .build();
   }
   @ExceptionHandler(ArithmeticException.class) // catch
   @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-  public ErrorResponse arithmeticExceptionHandler(ArithmeticException e) {
-    return ErrorResponse.of(ErrorCode.AE.getCode(), ErrorCode.AE.getDesc());
+  public ApiResp<Void> arithmeticExceptionHandler(ArithmeticException e) {
+    return ApiResp.<Void>builder() //
+        .error(ErrorCode.AE) //
+        .build();
   }
   @ExceptionHandler(BusinessRuntimeException.class)
   @ResponseStatus(value = HttpStatus.BAD_REQUEST)
@@ -29,10 +38,22 @@ public class GlobalExceptionHandler {
       BusinessRuntimeException e) {
     return new ErrorResponse(e.getCode(), e.getMessage());
   }
-  @ExceptionHandler(NotFoundException.class)
+  @ExceptionHandler(UserNotFoundException.class)
   @ResponseStatus(value = HttpStatus.BAD_REQUEST)
   public ErrorResponse notFoundExceptionHandler(
-    NotFoundException e) {
+    UserNotFoundException e) {
+    return new ErrorResponse(e.getCode(), e.getMessage());
+  }
+  @ExceptionHandler(InvalidInputException.class)
+  @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+  public ErrorResponse invalidInputExceptionHandler(
+    InvalidInputException e) {
+    return new ErrorResponse(e.getCode(), e.getMessage());
+  }
+  @ExceptionHandler(RestTemplateException.class)
+  @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+  public ErrorResponse restTemplateExceptionHandler(
+    RestTemplateException e) {
     return new ErrorResponse(e.getCode(), e.getMessage());
   }
  /*  @ExceptionHandler(Exception.class)
@@ -57,20 +78,6 @@ public class GlobalExceptionHandler {
   //   return ErrorResponse.of(99999, "Unhandled Exception.");
   // }
 
-  @Getter
-  private enum ErrorCode {
-    NPE(99, "Null Pointer Exception."), //
-    NFE(99, "Number Format Exception."), //
-    AE(99, "Arithmetic Exception."), //
-    ;
-
-    private int code;
-    private String desc;
-
-    private ErrorCode(int code, String desc) {
-      this.code = code;
-      this.desc = desc;
-    }
-  }
+  
 
 }
