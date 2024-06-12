@@ -17,6 +17,7 @@ class BcForumApplicationTests {
 	
 	@Test
 	void contextLoads() {
+		
 	}
 
 }

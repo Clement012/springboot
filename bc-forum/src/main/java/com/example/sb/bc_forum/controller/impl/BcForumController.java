@@ -1,6 +1,7 @@
 package com.example.sb.bc_forum.controller.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +11,9 @@ import com.example.sb.bc_forum.dto.reqout.UserDTO;
 import com.example.sb.bc_forum.dto.reqout.ForumUserDTO.ForumCommentDTO;
 import com.example.sb.bc_forum.dto.reqout.UserDTO.PostDTO;
 import com.example.sb.bc_forum.dto.reqout.UserDTO.PostDTO.CommentDTO;
+import com.example.sb.bc_forum.entity.CommentEntity;
+import com.example.sb.bc_forum.entity.PostEntity;
+import com.example.sb.bc_forum.entity.UserEntity;
 import com.example.sb.bc_forum.mapper.CommentMapper;
 import com.example.sb.bc_forum.mapper.ForumCommentMapper;
 import com.example.sb.bc_forum.mapper.ForumUserMapper;
@@ -18,6 +22,9 @@ import com.example.sb.bc_forum.mapper.UserMapper;
 import com.example.sb.bc_forum.model.Comment;
 import com.example.sb.bc_forum.model.Post;
 import com.example.sb.bc_forum.model.User;
+import com.example.sb.bc_forum.repository.PostRepository;
+import com.example.sb.bc_forum.repository.UserRepository;
+import com.example.sb.bc_forum.repository.CommentRepository;
 import com.example.sb.bc_forum.service.BcForumService;
 
 @RestController
@@ -40,9 +47,18 @@ public class BcForumController implements BcForumOperation{
 
   @Autowired
   private ForumCommentMapper forumCommentMapper;
+
+  @Autowired
+  private UserRepository userRepository;
+
+  @Autowired
+  private PostRepository postRepository;
+
+  @Autowired
+  private CommentRepository commentRepository;
   
 
-  @Override //3a
+  @Override //2-3a
   public List<UserDTO> getAllById() { // = post.class ->userId
     List <User> users = bcForumService.getUsers();
 
@@ -64,7 +80,7 @@ public class BcForumController implements BcForumOperation{
       return userDTOs;
   }
 
-  @Override //3b
+  @Override //2-3b
   public ForumUserDTO getForumData(int id) {  
     User user = bcForumService.getUsers().stream()
         .filter(u -> u.getId() == id)
@@ -81,7 +97,60 @@ public class BcForumController implements BcForumOperation{
 
    return forumUserMapper.mapForumUser(user, commentsList);
   }
-}
+
+  @Override // 3-users
+  public List<UserEntity> getAllUser(){ //No post
+    return userRepository.findAll();
+  }
+
+  @Override //3-userByid
+  public UserEntity getUserById(Long id) { //toService
+    Optional<UserEntity> userEntity = userRepository.findById(Long.valueOf(id));
+    if (userEntity.isPresent()){
+      return userEntity.get();
+    }
+    else {
+      return null;  // GLH
+    }
+   }
+
+   //3-putUser
+  @Override
+  public UserEntity updateUser(Long id, UserEntity entity){ //toService
+    Optional<UserEntity> userEntity = userRepository.findById(id);
+    if (userEntity.isPresent()){
+      userRepository.save(entity);
+      return entity;
+    }
+    else {
+      return null; // GLH
+     }
+    }
+
+    //3-getPost
+    @Override
+    public List<PostEntity> getAllPost(){ //notAscending
+      return postRepository.findAll();
+    }
+
+    //3-getPostByUserId
+    @Override
+    public PostEntity getPostByUserId(Long userId){  //connection Fail
+      Optional<PostEntity> postEntity = postRepository.findById(userId);
+    if (postEntity.isPresent()){
+      return postEntity.get();
+    }
+    else {
+      return null;  // GLH
+     }
+    }
+    //3-getComment
+    @Override
+    public List<CommentEntity> getAllComment(){
+      return commentRepository.findAll();
+    }
+  }
+
 
 
 

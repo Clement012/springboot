@@ -1,7 +1,6 @@
 package com.example.sb.bc_forum.infra;
 
 import java.util.List;
-import lombok.ToString;
 
 public class ApiResp<T> {
 

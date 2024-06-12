@@ -8,11 +8,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import com.example.sb.bc_forum.exceptions.RestTemplateException;
+import com.example.sb.bc_forum.entity.CommentEntity;
+import com.example.sb.bc_forum.entity.PostEntity;
 import com.example.sb.bc_forum.infra.Scheme;
 import com.example.sb.bc_forum.model.Comment;
 import com.example.sb.bc_forum.model.Post;
 import com.example.sb.bc_forum.model.User;
+import com.example.sb.bc_forum.repository.CommentRepository;
+import com.example.sb.bc_forum.repository.PostRepository;
+import com.example.sb.bc_forum.repository.UserRepository;
 import com.example.sb.bc_forum.service.BcForumService;
 
 @Service
@@ -33,9 +37,8 @@ public class BcForumServiceImpl implements BcForumService {
   @Autowired
   private RestTemplate restTemplate;
 
-
   @Override
-  public List<User> getUsers()  {
+  public List<User> getUsers()  {  //
     // String url = "https://jsonplaceholder.typicode.com/users";
     String url = UriComponentsBuilder.newInstance() //
         .scheme(Scheme.HTTPS.lowerCase()) //
@@ -47,7 +50,7 @@ public class BcForumServiceImpl implements BcForumService {
     // return fetchData(userEndpoint, User[].class);
   }
 
-  @Override
+  @Override  
   public List<Post> getPosts(int userId)  {
     // String url2 = "https://jsonplaceholder.typicode.com/posts";
     String url2 = UriComponentsBuilder.newInstance() //
@@ -74,29 +77,31 @@ public class BcForumServiceImpl implements BcForumService {
             .collect(Collectors.toList());
     // return fetchData(commentEndpoint, Comment[].class);
   }
-
+  
+  // @Override
+  // public void save(){
+  //            getComments().stream()
+  //           .map(c -> commentEntityMapper.mapCommentEntity(c))
+  //           .forEach(c -> commentRepository.save(c))
+  //           .collect(Collectors.toList());
+  //  List<PostEntity> postEntity = postServiceImpl.getPosts().stream()
+  //          .map(p -> postEntityMapper.mapPostEntity(p, commentEntity))
+  //           .collect(Collectors.toList());
+  //     getUsers().stream()
+  //     .map(u -> userEntityMapper.mapUserEntity(u , postEntity))
+  //     .forEach(u -> userRepository.save(u));
+  // }
 }
-  // private <T> List<T> fetchData(String endpoint, Class<T[]> responseType) {
-  // String url = UriComponentsBuilder.newInstance()
-  // .scheme("https")
-  // .host(this.domain)
-  // .path(endpoint)
-  // .toUriString();
-  // T[] response = restTemplate.getForObject(url, responseType);
-  // return Arrays.asList(response);
-  // }
-
-
-  // public ForumDataDTO getForumData() {
-  // List<User> users = fetchData(userEndpoint, User[].class);
-  // List<Post> posts = fetchData(postEndpoint, Post[].class);
-  // List<Comment> comments = fetchData(commentEndpoint, Comment[].class);
-
-  // ForumDataDTO forumData = new ForumDataDTO();
-  // forumData.setPosts(posts);
-  // forumData.setComments(comments);
-  // return forumData;
-  // }
+  
+//private <T> List<T> fetchData(String endpoint, Class<T[]> responseType) {
+  //   String url = UriComponentsBuilder.newInstance()
+  //   .scheme("https")
+  //   .host(this.domain)
+  //   .path(endpoint)
+  //   .toUriString();
+  //   T[] response = restTemplate.getForObject(url, responseType);
+  //   return Arrays.asList(response);
+  //   }
 
 
 // private String buildUrl(String endpoint) {

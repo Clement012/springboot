@@ -12,6 +12,7 @@ public class PostServiceimpl implements PostService {
   @Autowired
   private PostRepository postRepository;
   
+  @Override
   public PostEntity savePost(PostEntity post){
     return postRepository.save(post);
   }

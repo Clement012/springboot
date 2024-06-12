@@ -12,7 +12,7 @@ import demo.sb.restful.entity.UserEntity;
 @Repository // bean
 // Hibernate
 // Generate the class implementing this Jpa interface
-public interface UserRepository extends JpaRepository<UserEntity,Long>{
+public interface UserRepository extends JpaRepository<UserEntity,Long>{  //Jpa is Optional
 
   // JPA + Hibernate, generate corrsponding SQL syntax by method name convention
   // rules

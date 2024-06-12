@@ -57,7 +57,6 @@ public class UserEntity {
   // // case 1 undirectional relationship
   // // only add at user
   // @OneToMany (cascade = {CascadeType.ALL})    
-  // //JsonManagedReference
   // @JoinColumn(name = "user_id")
   // private List<PostEntity> posts = new ArrayList<>();
 
