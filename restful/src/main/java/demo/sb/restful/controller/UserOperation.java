@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import demo.sb.restful.dto.reqdto.UserReqDTO;
 import demo.sb.restful.dto.respdto.UserDTO;
 import demo.sb.restful.entity.UserEntity;
@@ -15,7 +16,7 @@ import demo.sb.restful.entity.UserEntity;
 public interface UserOperation {
   
   @GetMapping(value = "/jsonplacefolder/users")
-  List<UserDTO> getUsers();
+  List<UserDTO> getUsers() throws JsonProcessingException;
 
   @PostMapping(value = "/user")
   UserEntity saveUser(@RequestBody UserEntity user);

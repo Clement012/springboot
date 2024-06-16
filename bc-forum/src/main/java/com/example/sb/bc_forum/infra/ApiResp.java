@@ -63,9 +63,18 @@ public class ApiResp<T> {
       return this;
     }
 
+    public ApiRespBuilder<T> sysCodeError(SysCode sysCode) {
+      if (sysCode == null)
+        throw new NullPointerException("errorCode cannot be null.");
+      this.code = sysCode.getCode();
+      this.message = sysCode.getDesc();
+      return this;
+    }
+
+
     public ApiRespBuilder<T> ok(){
-      this.code = 0;
-      this.message = "OK";
+      this.code = 00000;
+      this.message = "Success";
       return this;
     }
 

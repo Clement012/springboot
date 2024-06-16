@@ -2,26 +2,24 @@ package com.example.sb.bc_forum.service.impl;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import com.example.sb.bc_forum.entity.CommentEntity;
-import com.example.sb.bc_forum.entity.PostEntity;
 import com.example.sb.bc_forum.entity.UserEntity;
+import com.example.sb.bc_forum.exceptions.NotFoundException;
+import com.example.sb.bc_forum.exceptions.RestTemplateException;
+import com.example.sb.bc_forum.exceptions.UserNotFoundException;
 import com.example.sb.bc_forum.infra.Scheme;
-import com.example.sb.bc_forum.mapper.reqinmapper.CommentEntityMapper;
-import com.example.sb.bc_forum.mapper.reqinmapper.PostEntityMapper;
 import com.example.sb.bc_forum.mapper.reqinmapper.UserEntityMapper;
 import com.example.sb.bc_forum.model.User;
 import com.example.sb.bc_forum.repository.UserRepository;
 import com.example.sb.bc_forum.service.UserService;
 
 @Service
-@Order(1)
+//Order(1)
 public class UserServiceImpl implements UserService {
   
   @Value(value = "${api.json-place-holder.domain}")
@@ -39,18 +37,6 @@ public class UserServiceImpl implements UserService {
   @Autowired
   private UserEntityMapper userEntityMapper;
 
-  @Autowired
-  private PostEntityMapper postEntityMapper;
-
-  @Autowired
-  private PostServiceImpl postServiceImpl;
-
-  @Autowired
-  private CommentServiceImpl commentServiceImpl;
-
-  @Autowired
-  private CommentEntityMapper commentEntityMapper;
-
   @Override
   public List<User> getUsers()  {  //
     // String url = "https://jsonplaceholder.typicode.com/users";
@@ -60,29 +46,41 @@ public class UserServiceImpl implements UserService {
         .path(userEndpoint) //
         .toUriString(); //
     User[] users = restTemplate.getForObject(url, User[].class);
+    if (users != null){
     return Arrays.asList(users);
+    } throw new RestTemplateException();
   }
 
+  @Override
   public void saveUsers(){
-   // if (userRepository == null){
-   List<CommentEntity> commentEntity = commentServiceImpl.getComments().stream()
-            .map(c -> commentEntityMapper.mapCommentEntity(c))
-            .collect(Collectors.toList());
-   List<PostEntity> postEntity = postServiceImpl.getPosts().stream()
-           .map(p -> postEntityMapper.mapPostEntity(p, commentEntity))
-            .collect(Collectors.toList());
+  //  if (userRepository == null){
       getUsers().stream()
-      .map(u -> userEntityMapper.mapUserEntity(u , postEntity))
+      .map(u -> userEntityMapper.mapUserEntity(u))
       .forEach(u -> userRepository.save(u));
-   // }
+    // }
    }
 
-//   public UserEntity saveUserData(UserEntity userEntity) {
-//     String url = "https://jsonplaceholder.typicode.com/users";
-//     User[] users = restTemplate.getForObject(url, User[].class);
+   @Override
+   public List<UserEntity> getUserEntities(){
+    return userRepository.findAll();
+   }
 
-//     UserEntity entity = new UserEntity();
-//     userRepository.save(entity);
-// }
-    
-}
+   @Override
+   public UserEntity getUserById(Long id){
+    Optional<UserEntity> userEntity = userRepository.findById(id);
+    if (userEntity.isPresent()){
+      return userEntity.get();
+    }
+    throw new UserNotFoundException();
+   }
+   @Override
+   public UserEntity updateUser(Long id,UserEntity entity){
+    Optional<UserEntity> userEntity = userRepository.findById(id);
+    if (userEntity.isPresent()){
+      userRepository.save(entity);
+      return entity;
+    }
+    throw new UserNotFoundException();
+    }
+   }
+

@@ -4,27 +4,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
-import com.example.sb.bc_forum.service.impl.CommentServiceImpl;
-import com.example.sb.bc_forum.service.impl.PostServiceImpl;
-import com.example.sb.bc_forum.service.impl.UserServiceImpl;
+import com.example.sb.bc_forum.service.CommentService;
+import com.example.sb.bc_forum.service.PostService;
+import com.example.sb.bc_forum.service.UserService;
 
 @Component
 public class AppRunner implements CommandLineRunner{
 
   @Autowired
-  private UserServiceImpl userServiceImpl;
+  private UserService userService;
 
   @Autowired
-  private PostServiceImpl postServiceImpl;
+  private PostService postService;
   
   @Autowired
-  private CommentServiceImpl commentServiceImpl;
+  private CommentService commentService;
 
   @Override
-  @DependsOn({"userServiceImpl", "postServiceImpl","commentServiceImpl"})
+  //DependsOn({"userServiceImpl", "postServiceImpl","commentServiceImpl"})
   public void run(String... args){
-    userServiceImpl.saveUsers();
-    postServiceImpl.savePosts();
-    commentServiceImpl.saveComments();
+    userService.saveUsers();
+    postService.savePosts();
+    commentService.saveComments();
   }
 }

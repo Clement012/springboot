@@ -30,7 +30,7 @@ public interface UserRepository extends JpaRepository<UserEntity,Long>{  //Jpa i
  
   // // JPQL + @Modifying (Update, Delete)  //CREATE,UPDATE,DELETE
   // @Modifying  //Trans if A pay B get, B get but A no decrease <- reject
-  // @Query(value = "update UseerEntity e set e.email = :newEmail where e.id = :userId")
+  // @Query(value = "update UserEntity e set e.email = :newEmail where e.id = :userId")
   // void updateUserEmail(@Param("UserId") Long id,@Param("newEmail") String email);
   // // int /boolean//void?
 

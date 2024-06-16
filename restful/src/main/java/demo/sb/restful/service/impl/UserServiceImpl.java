@@ -1,17 +1,22 @@
 package demo.sb.restful.service.impl;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import demo.sb.restful.dto.reqdto.UserReqDTO;
 import demo.sb.restful.entity.UserEntity;
 import demo.sb.restful.infra.NotFoundException;
+import demo.sb.restful.infra.RedisHelper;
 import demo.sb.restful.infra.Scheme;
 import demo.sb.restful.service.UserService;
 import demo.sb.restful.model.dto.User;
@@ -36,8 +41,22 @@ public class UserServiceImpl implements UserService {
   @Autowired
   private UserRepository userRepository;
 
+  @Autowired 
+  private RedisHelper redisHelper;
+  // private RedisTemplate<String,String> redisTemplate;
+
   @Override
-  public List <User> getUsers(){    
+  public List <User> getUsers() throws JsonProcessingException{    
+    // get from redis
+    // String redisValue = redisTemplate.opsForValue().get("jph-users");
+    // ObjectMapper objectMapper = new ObjectMapper();
+    // if ( redisValue != null){
+    //   return List.of(objectMapper.readValue(redisValue, User[].class));
+    // }
+    User []users = redisHelper.get("jph-users", User[].class);
+    if (users != null){
+      return List.of(users);
+    }
     // RestTemplate
     // String url = "https://jsonplaceholder.typicode.com/users"
     
@@ -49,12 +68,13 @@ public class UserServiceImpl implements UserService {
 
     // System.out.println("url=" + url); check debug
 
-    User[] users = restTemplate.getForObject(url, User[].class); 
+    users = restTemplate.getForObject(url, User[].class); 
     // new RestTemplate().getForObject
     // 1. call API,and get json result
     // 2. Convert json result to java object(User[].class)
     // call restful only need @getter
     // IN JAVA 
+    this.redisHelper.set("jph-users", users);
     return Arrays.asList(users);
   }
   @Override

@@ -8,18 +8,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import com.example.sb.bc_forum.entity.CommentEntity;
-import com.example.sb.bc_forum.entity.PostEntity;
+import com.example.sb.bc_forum.exceptions.RestTemplateException;
 import com.example.sb.bc_forum.infra.Scheme;
 import com.example.sb.bc_forum.model.Comment;
 import com.example.sb.bc_forum.model.Post;
 import com.example.sb.bc_forum.model.User;
-import com.example.sb.bc_forum.repository.CommentRepository;
-import com.example.sb.bc_forum.repository.PostRepository;
-import com.example.sb.bc_forum.repository.UserRepository;
 import com.example.sb.bc_forum.service.BcForumService;
 
-@Service
+@Service  //2
 public class BcForumServiceImpl implements BcForumService {
 
   @Value(value = "${api.json-place-holder.domain}")
@@ -40,14 +36,18 @@ public class BcForumServiceImpl implements BcForumService {
   @Override
   public List<User> getUsers()  {  //
     // String url = "https://jsonplaceholder.typicode.com/users";
+    
     String url = UriComponentsBuilder.newInstance() //
         .scheme(Scheme.HTTPS.lowerCase()) //
         .host(this.domain) //
         .path(userEndpoint) //
         .toUriString(); //
     User[] users = restTemplate.getForObject(url, User[].class);
+    if ( users != null ){
     return Arrays.asList(users);
+    }throw new RestTemplateException();
     // return fetchData(userEndpoint, User[].class);
+
   }
 
   @Override  
@@ -59,8 +59,10 @@ public class BcForumServiceImpl implements BcForumService {
         .path(postEndpoint) //
         .toUriString(); //
     Post[] posts = restTemplate.getForObject(url2, Post[].class);
+    if (posts != null){
     return Arrays.stream(posts).filter(p -> p.getUserId() == userId)
            .collect(Collectors.toList());
+    }throw new RestTemplateException();
     // return fetchData(postEndpoint, Post[].class);
   }
 
@@ -73,8 +75,10 @@ public class BcForumServiceImpl implements BcForumService {
         .path(commentEndpoint) //
         .toUriString(); //
     Comment[] comments = restTemplate.getForObject(url3, Comment[].class);
+    if (comments != null){
     return Arrays.stream(comments).filter(c -> c.getPostId() == postId)
             .collect(Collectors.toList());
+    } throw new RestTemplateException();
     // return fetchData(commentEndpoint, Comment[].class);
   }
   

@@ -11,7 +11,7 @@ import com.example.sb.bc_forum.model.User;
 @Component
 public class UserEntityMapper {
   
-  public UserEntity mapUserEntity(User user,List<PostEntity> postEntities){
+  public UserEntity mapUserEntity(User user){ //,List<PostEntity> postEntities
 
    UserEntity userEntity = new UserEntity();
    userEntity.setId(Long.valueOf(user.getId()));
@@ -29,7 +29,6 @@ public class UserEntityMapper {
    userEntity.setCompanyName(user.getCompany().getName());
    userEntity.setCompanyCatchPharse(user.getCompany().getCatchPhrase());
    userEntity.setCompanyBusiness(user.getCompany().getBusiness());
-   userEntity.setPosts(postEntities);
    return userEntity;
   }
 }

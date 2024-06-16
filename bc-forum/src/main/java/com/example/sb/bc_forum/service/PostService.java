@@ -9,4 +9,12 @@ public interface PostService {
   List<Post> getPosts();
 
   void savePosts();
+
+  List<PostEntity> getPostEntities();
+
+  List<PostEntity> getPostByUserId(Long userId);
+
+  PostEntity addPost(Long userId,PostEntity entity);
+
+  PostEntity deletePostById(Long id);
 } 

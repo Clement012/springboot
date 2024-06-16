@@ -5,33 +5,34 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.example.sb.bc_forum.exceptions.InvalidInputException;
+import com.example.sb.bc_forum.exceptions.NotFoundException;
 import com.example.sb.bc_forum.exceptions.RestTemplateException;
 import com.example.sb.bc_forum.exceptions.UserNotFoundException;
 
-@RestControllerAdvice // @ContollerAdvice + @ResponseBody
+//RestControllerAdvice // @ContollerAdvice + @ResponseBody
 public class GlobalExceptionHandler {
 
-  @ExceptionHandler(NumberFormatException.class) // catch
-  @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-  public ApiResp<Void> numberFormatExceptionHandler(NumberFormatException e) {
-    return ApiResp.<Void>builder() //
-        .error(ErrorCode.NFE) //
-        .build();
-  }
-  @ExceptionHandler(NullPointerException.class) // catch
-  @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-  public ApiResp<Void> nullPointerExceptionHandler(NullPointerException e) {
-    return ApiResp.<Void>builder() //
-        .error(ErrorCode.NPE) //
-        .build();
-  }
-  @ExceptionHandler(ArithmeticException.class) // catch
-  @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-  public ApiResp<Void> arithmeticExceptionHandler(ArithmeticException e) {
-    return ApiResp.<Void>builder() //
-        .error(ErrorCode.AE) //
-        .build();
-  }
+  // @ExceptionHandler(NumberFormatException.class) // catch
+  // @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+  // public ApiResp<Void> numberFormatExceptionHandler(NumberFormatException e) {
+  //   return ApiResp.<Void>builder() //
+  //       .error(ErrorCode.NFE) //
+  //       .build();
+  // }
+  // @ExceptionHandler(NullPointerException.class) // catch
+  // @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+  // public ApiResp<Void> nullPointerExceptionHandler(NullPointerException e) {
+  //   return ApiResp.<Void>builder() //
+  //       .error(ErrorCode.NPE) //
+  //       .build();
+  // }
+  // @ExceptionHandler(ArithmeticException.class) // catch
+  // @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+  // public ApiResp<Void> arithmeticExceptionHandler(ArithmeticException e) {
+  //   return ApiResp.<Void>builder() //
+  //       .error(ErrorCode.AE) //
+  //       .build();
+  // }
   @ExceptionHandler(BusinessRuntimeException.class)
   @ResponseStatus(value = HttpStatus.BAD_REQUEST)
   public ErrorResponse businessRuntimeExceptionHandler(
@@ -40,21 +41,35 @@ public class GlobalExceptionHandler {
   }
   @ExceptionHandler(UserNotFoundException.class)
   @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-  public ErrorResponse notFoundExceptionHandler(
+  public ApiResp<Void> notFoundExceptionHandler(
     UserNotFoundException e) {
-    return new ErrorResponse(e.getCode(), e.getMessage());
+    return ApiResp.<Void>builder()
+        .sysCodeError(SysCode.USER_NOT_FOUND)
+        .build();
   }
   @ExceptionHandler(InvalidInputException.class)
   @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-  public ErrorResponse invalidInputExceptionHandler(
+  public ApiResp<Void> invalidInputExceptionHandler(
     InvalidInputException e) {
-    return new ErrorResponse(e.getCode(), e.getMessage());
+    return ApiResp.<Void>builder()
+       .sysCodeError(SysCode.INVALID_INPUT)
+       .build();
   }
   @ExceptionHandler(RestTemplateException.class)
   @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-  public ErrorResponse restTemplateExceptionHandler(
+  public ApiResp<Void> restTemplateExceptionHandler(
     RestTemplateException e) {
-    return new ErrorResponse(e.getCode(), e.getMessage());
+    return ApiResp.<Void>builder()
+       .sysCodeError(SysCode.RESTTEMPLATE_ERROR)
+       .build();
+  }
+  @ExceptionHandler(NotFoundException.class)
+  @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+  public ApiResp<Void> notFoundExceptionHandler(
+    NotFoundException e) {
+    return ApiResp.<Void>builder()
+       .sysCodeError(SysCode.NOT_FOUND)
+       .build();
   }
  /*  @ExceptionHandler(Exception.class)
   @ResponseStatus(value = HttpStatus.BAD_REQUEST)

@@ -17,6 +17,10 @@ public class CommentEntityMapper {
     commentEntity.setEmail(comment.getEmail());
     commentEntity.setBody(comment.getBody());
     // commentEntity.setPost(postEntity);
+
+    PostEntity postEntity = new PostEntity();
+    postEntity.setId(Long.valueOf(comment.getPostId()));
+    commentEntity.setPost(postEntity);
     return commentEntity;
        
   }

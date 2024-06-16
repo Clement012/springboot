@@ -17,8 +17,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "Comments")
 public class CommentEntity implements Serializable{

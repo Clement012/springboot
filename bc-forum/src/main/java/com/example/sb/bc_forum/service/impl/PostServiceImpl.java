@@ -1,27 +1,26 @@
 package com.example.sb.bc_forum.service.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import com.example.sb.bc_forum.entity.CommentEntity;
 import com.example.sb.bc_forum.entity.PostEntity;
 import com.example.sb.bc_forum.entity.UserEntity;
+import com.example.sb.bc_forum.exceptions.NotFoundException;
+import com.example.sb.bc_forum.exceptions.RestTemplateException;
 import com.example.sb.bc_forum.infra.Scheme;
-import com.example.sb.bc_forum.mapper.reqinmapper.CommentEntityMapper;
 import com.example.sb.bc_forum.mapper.reqinmapper.PostEntityMapper;
-import com.example.sb.bc_forum.mapper.reqinmapper.UserEntityMapper;
 import com.example.sb.bc_forum.model.Post;
 import com.example.sb.bc_forum.repository.PostRepository;
 import com.example.sb.bc_forum.service.PostService;
 
 @Service
-@Order(2)
+//Order(2)
 public class PostServiceImpl implements PostService{
   
   @Value(value = "${api.json-place-holder.domain}")
@@ -33,17 +32,11 @@ public class PostServiceImpl implements PostService{
   @Autowired
   private RestTemplate restTemplate;
 
-  @Autowired 
-  private PostRepository postRepository;
-
   @Autowired
   private PostEntityMapper postEntityMapper;
 
   @Autowired
-  private CommentEntityMapper commentEntityMapper;
-
-  @Autowired
-  private CommentServiceImpl commentServiceImpl;
+  private PostRepository postRepository;
 
   @Override  
   public List<Post> getPosts()  {
@@ -54,28 +47,68 @@ public class PostServiceImpl implements PostService{
         .path(postEndpoint) //
         .toUriString(); //
     Post[] posts = restTemplate.getForObject(url, Post[].class);
-    return Arrays.asList(posts);
+    if (posts != null){
+      return Arrays.asList(posts);
+    }
+    throw new RestTemplateException();
     // return fetchData(postEndpoint, Post[].class);
   }
 
   @Override
   public void savePosts(){
-    //if (postRepository == null){
-      List<CommentEntity> commentEntity = commentServiceImpl.getComments().stream()
-            .map(c -> commentEntityMapper.mapCommentEntity(c))
-            .collect(Collectors.toList());
-              getPosts().stream()
-               .map(post -> postEntityMapper.mapPostEntity(post, commentEntity))
-               .forEach(post -> postRepository.save(post));
-      // List <UserEntity> userEntities = userServiceImpl.getUsers().stream()
-      //    .map(u -> { // input userEntity
-      // List<PostEntity> postEntities = getPosts().stream()
-      // .map(post -> postEntityMapper.mapPostEntity(u , post))
-      // .forEach(post -> postRepository.save(post));
-      //  return userEntityMapper(u);
-      //    }).forEach(user -> userRepository.save(user));
-      
-    //}
+    // if (postRepository == null){  
+
+      // List<UserEntity> userEntities = userService.getUsers().stream()
+      //                     .map(u -> userEntityMapper.mapUserEntity(u))
+      //                     .collect(Collectors.toList());
+
+    //for (UserEntity userEntity : userEntities) {  
+    //List<PostEntity> postEntities =  userEntity.getId()
+                            getPosts().stream()
+                           .map(post -> postEntityMapper.mapPostEntity(post))
+                           .forEach(p -> postRepository.save(p));
+                     //      .collect(Collectors.toList());
+       //  postRepository.saveAll(postEntities);
+     } 
+   
+   
+   @Override
+   public List<PostEntity> getPostEntities(){
+    return postRepository.findAll();
    }
-  
-}
+
+   @Override
+   public List<PostEntity> getPostByUserId(Long userId){
+     UserEntity userEntity = new UserEntity();
+     userEntity.setId(userId);
+     List<PostEntity> postEntity = postRepository.findByUserId(userEntity);
+    if (postEntity.size() > 0){
+      return postEntity;
+    }
+      throw new NotFoundException();
+   }
+
+   @Override 
+   public PostEntity addPost(Long userId,PostEntity entity){
+    UserEntity userEntity = new UserEntity();
+    userEntity.setId(userId);
+    List<PostEntity> postEntity = postRepository.findByUserId(userEntity);
+   if (postEntity.size() > 0){
+    entity.setUser(userEntity);
+    postRepository.save(entity);
+    return entity;
+     }
+     throw new NotFoundException();
+   }
+
+   @Override
+   public PostEntity deletePostById(Long id){
+    Optional<PostEntity> postEntity = postRepository.findById(id);
+    if (postEntity.isPresent()){
+      postRepository.deleteById(id);
+      return postEntity.get();
+    }
+    throw new NotFoundException();
+   }
+  }
+

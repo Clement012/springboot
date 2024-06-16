@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import demo.sb.restful.controller.UserOperation;
 import demo.sb.restful.dto.reqdto.UserReqDTO;
 import demo.sb.restful.dto.respdto.UserDTO;
@@ -27,7 +28,7 @@ public class UserController implements UserOperation{
   private UserMapper mapper;
 
   @Override
-    public List<UserDTO> getUsers(){
+    public List<UserDTO> getUsers() throws JsonProcessingException {
     //  return userservice.getUsers(); // list in service
       return userService.getUsers().stream()
          .map(e -> mapper.map(e))

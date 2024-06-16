@@ -22,8 +22,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "Posts")
 public class PostEntity implements Serializable{

@@ -6,7 +6,7 @@ import com.example.sb.bc_forum.infra.SysCode;
 public class UserNotFoundException extends BusinessRuntimeException {
   
   public UserNotFoundException() {
-    super(SysCode.RESTTEMPLATE_ERROR);
+    super(SysCode.USER_NOT_FOUND);
   }
 
   // public NotFoundException(SysCode sysCode) {
