@@ -9,6 +9,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import com.bootcamp.sb.infra.Scheme;
 import com.bootcamp.sb.model.Album;
+import com.bootcamp.sb.repository.AlbumRepository;
+import com.bootcamp.sb.mapper.AlbumEntityMapper;
 import com.bootcamp.sb.service.AlbumService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,6 +26,12 @@ public class AlbumServiceimpl implements AlbumService{
   
   @Autowired
   private RestTemplate restTemplate; //Step3
+
+  @Autowired
+  private AlbumRepository albumRepository;
+
+  @Autowired
+  private AlbumEntityMapper albumEntityMapper;
   
   @Override 
   public List<Album> getAlbums(){  //Step 2
@@ -43,5 +51,12 @@ public class AlbumServiceimpl implements AlbumService{
 
   //  return Arrays.asList(albums);
  // }
+
+  @Override
+  public void saveAlbum(){
+    getAlbums().stream()
+     .map(a -> albumEntityMapper.map(a))
+     .forEach(a -> albumRepository.save(a));
+  }
 
 }

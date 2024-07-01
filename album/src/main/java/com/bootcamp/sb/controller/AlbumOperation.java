@@ -8,4 +8,6 @@ import com.bootcamp.sb.model.Album;
 public interface AlbumOperation {
   @GetMapping(value = "/jsonplaceholder/albums")
   List<AlbumDTO> getAlbums();
+
+  
 }

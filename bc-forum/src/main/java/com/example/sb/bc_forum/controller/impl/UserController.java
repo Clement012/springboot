@@ -2,6 +2,7 @@ package com.example.sb.bc_forum.controller.impl;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.sb.bc_forum.controller.UserOperation;
 import com.example.sb.bc_forum.entity.UserEntity;
@@ -9,6 +10,7 @@ import com.example.sb.bc_forum.infra.ApiResp;
 import com.example.sb.bc_forum.service.UserService;
 
 @RestController
+@RequestMapping(value = "/user")
 public class UserController implements UserOperation{
 
   @Autowired

@@ -1,6 +1,7 @@
 package com.example.sb.bc_forum.controller.impl;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import com.example.sb.bc_forum.entity.CommentEntity;
 import com.example.sb.bc_forum.service.CommentService;
 
 @RestController
+@RequestMapping(value = "/comment")
 public class CommentController implements CommentOperation{
   
   @Autowired

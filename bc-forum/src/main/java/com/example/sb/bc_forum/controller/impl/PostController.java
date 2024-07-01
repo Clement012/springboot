@@ -7,9 +7,11 @@ import com.example.sb.bc_forum.entity.PostEntity;
 import com.example.sb.bc_forum.service.PostService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping(value = "/post")
 public class PostController implements PostOperation{
   
   @Autowired

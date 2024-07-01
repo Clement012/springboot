@@ -6,4 +6,6 @@ import com.bootcamp.sb.model.Album;
 public interface AlbumService {
   
   List<Album> getAlbums();
+
+  void saveAlbum();
 }

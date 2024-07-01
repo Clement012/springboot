@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymyleaf.org">
+<head>
+  <title>Coin Data</title>
+</head>
+<body>
+  <h1>Coin Data</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Image</th>
+        <th>Current Price (USD)</th>
+        <th>Ath Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="coinData : ${coinDataList}">
+        <td th:text="${coinData.id}">
+          <td><img th:src="${coinData.image}" alt="Coin Image" height="50">
+          <td th:text="${coinData.currentPrice}"></td>
+          <td th:text="${coinData.athDate}"></td>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body></html>
